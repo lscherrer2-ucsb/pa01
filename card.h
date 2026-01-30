@@ -1,8 +1,28 @@
 // card.h
-// Author: Your name
+// Author: Luke Scherrer
 // All class declarations related to defining a single card go here
+#pragma once
 
-#ifndef CARD_H
-#define CARD_H
+#define MAX_RANK 13
 
-#endif
+enum Suit {
+    CLUBS,
+    DIAMONDS,
+    SPADES,
+    HEARTS,
+};
+
+enum Rank {
+    ACE = 1,
+    JACK = 11,
+    QUEEN = 12,
+    KING = 13,
+};
+
+struct Card {
+    const Suit suit;
+    const int rank;
+    const int value;
+
+    Card(Suit suit, int rank);
+};
