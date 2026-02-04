@@ -1,8 +1,34 @@
 // card_list.h
 // Author: Your name
-// All class declarations related to defining a BST that represents a player's hand
+// All class declarations related to defining a BST that represents a player's
+// hand
+#pragma once
 
-#ifndef CARD_LIST_H
-#define CARD_LIST_H
+#include "card.h"
+class CardList {
+  private:
+    struct Node {
+        Card card;
+        Node *parent;
+        Node *left;
+        Node *right;
+    };
+    Node *root;
 
-#endif
+  public:
+    CardList(void);
+    bool insert(Card);
+    bool remove(Card);
+    Card successor(Card);
+    Card predecessor(Card);
+    Card min(void);
+    Card max(void);
+
+  private:
+    Node *successorNode(Node *);
+    Node *predecessorNode(Node *);
+    Node *minNode(Node *root);
+    Node *maxNode(Node *root);
+    bool insertHelper(Node *, Card c);
+    bool removeHelper(Node *, Card c);
+};

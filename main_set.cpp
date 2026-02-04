@@ -1,40 +1,36 @@
 // This file should implement the game using the std::set container class
 // Do not include card_list.h in this file
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <set>
 #include "card.h"
+#include "game_set.h"
+#include "util.h"
+#include <fstream>
+#include <iostream>
+#include <set>
 
 using namespace std;
 
-int main(int argv, char** argc){
-  if(argv < 3){
-    cout << "Please provide 2 file names" << endl;
-    return 1;
-  }
-  
-  ifstream cardFile1 (argc[1]);
-  ifstream cardFile2 (argc[2]);
-  string line;
+int main(int argv, char **argc) {
+    if (argv < 3) {
+        cout << "Please provide 2 file names" << endl;
+        return 1;
+    }
 
-  if (cardFile1.fail() || cardFile2.fail() ){
-    cout << "Could not open file " << argc[2];
-    return 1;
-  }
+    ifstream alice_file(argc[1]);
+    ifstream bob_file(argc[2]);
 
-  //Read each file
-  while (getline (cardFile1, line) && (line.length() > 0)){
+    if (alice_file.fail() || bob_file.fail()) {
+        cout << "Could not open file " << argc[2];
+        return 1;
+    }
 
-  }
-  cardFile1.close();
+    std::set<Card> alice_hand = card_set_from_file(alice_file);
+    std::set<Card> bob_hand = card_set_from_file(bob_file);
 
+    alice_file.close();
+    bob_file.close();
 
-  while (getline (cardFile2, line) && (line.length() > 0)){
+    bool done = false;
+    while (!(done = take_turn(alice_hand, bob_hand)));
 
-  }
-  cardFile2.close();
-  
-  
-  return 0;
+    return 0;
 }
