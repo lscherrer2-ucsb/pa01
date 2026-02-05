@@ -7,7 +7,7 @@
 #include <fstream>
 #include <set>
 
-static int parse_suit(char s) {
+int parse_suit(char s) {
     switch (s) {
     case 'c':
         return Suit::CLUBS;
@@ -20,7 +20,7 @@ static int parse_suit(char s) {
     }
     return -1;
 }
-static int parse_rank(std::string s) {
+int parse_rank(std::string s) {
     if (s.size() > 1) {
         return 10;
     }

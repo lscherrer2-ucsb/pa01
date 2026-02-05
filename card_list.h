@@ -5,6 +5,7 @@
 #pragma once
 
 #include "card.h"
+#include <type_traits>
 class CardList {
   private:
     struct Node {
@@ -12,24 +13,88 @@ class CardList {
         Node *parent;
         Node *left;
         Node *right;
+
+        Node(Card);
     };
     Node *root;
+
+    struct Iterator {
+        Node *current;
+
+        Iterator(Node *n) : current(n) {}
+
+        const Card &operator*() const {
+            return current->card;
+        }
+
+        Iterator &operator++() {
+            if (current->right) {
+                current = current->right;
+                while (current->left) current = current->left;
+            } else {
+                Node *p = current->parent;
+                while (p && current == p->right) {
+                    current = p;
+                    p = p->parent;
+                }
+                current = p;
+            }
+            return *this;
+        }
+
+        bool operator!=(const Iterator &other) const {
+            return current != other.current;
+        }
+    };
+    struct ReverseIterator {
+        Node *current;
+
+        ReverseIterator(Node *n) : current(n) {}
+
+        const Card &operator*() const {
+            return current->card;
+        }
+
+        ReverseIterator &operator++() {
+            if (current->left) {
+                current = current->left;
+                while (current->right) current = current->right;
+            } else {
+                Node *p = current->parent;
+                while (p && current == p->left) {
+                    current = p;
+                    p = p->parent;
+                }
+                current = p;
+            }
+            return *this;
+        }
+
+        bool operator!=(const ReverseIterator &other) const {
+            return current != other.current;
+        }
+    };
 
   public:
     CardList(void);
     ~CardList(void);
-    CardList(const CardList& source);
-    CardList& operator=(const CardList& source);
+    CardList(const CardList &source);
+    CardList &operator=(const CardList &source);
 
     bool insert(Card);
     bool remove(Card);
-    Card successor(Card);
-    Card predecessor(Card);
+    bool contains(Card) const;
     Card min(void);
     Card max(void);
 
+    Iterator begin(void);
+    Iterator end(void);
+    ReverseIterator rbegin(void);
+    ReverseIterator rend(void);
+
   private:
-    void clear(Node *n); // helper for destructor
+    void clear(Node *n);
+    Node *copySubtree(Node *n);
     Node *successorNode(Node *);
     Node *predecessorNode(Node *);
     Node *minNode(Node *root);
@@ -37,3 +102,5 @@ class CardList {
     bool insertHelper(Node *, Card c);
     bool removeHelper(Node *, Card c);
 };
+
+std::ostream &operator<<(std::ostream &os, CardList &c);

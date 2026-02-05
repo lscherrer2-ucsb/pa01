@@ -1,12 +1,11 @@
 // This file should implement the game using a custom implementation of a BST
 // (based on your earlier BST implementation)
-#include "card.h"
+// Do not include set in this file
 #include "card_list.h"
+#include "game.h"
 #include "util.h"
 #include <fstream>
 #include <iostream>
-#include <string>
-// Do not include set in this file
 
 using namespace std;
 
@@ -29,6 +28,17 @@ int main(int argv, char **argc) {
 
     alice_file.close();
     bob_file.close();
+
+    bool done = false;
+    while (!done) done = take_turn(alice_hand, bob_hand);
+
+    std::cout << std::endl;
+
+    std::cout << "Alice's cards:" << std::endl;
+    std::cout << alice_hand << std::endl;
+
+    std::cout << "Bob's cards:" << std::endl;
+    std::cout << bob_hand;
 
     return 0;
 }

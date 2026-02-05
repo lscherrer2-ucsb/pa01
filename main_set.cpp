@@ -9,6 +9,12 @@
 
 using namespace std;
 
+std::ostream &operator<<(std::ostream &os, std::set<Card> &c) {
+    for (auto it = c.begin(); it != c.end(); ++it)
+        std::cout << *it << std::endl;
+    return os;
+}
+
 int main(int argv, char **argc) {
     if (argv < 3) {
         cout << "Please provide 2 file names" << endl;
@@ -30,7 +36,15 @@ int main(int argv, char **argc) {
     bob_file.close();
 
     bool done = false;
-    while (!(done = take_turn(alice_hand, bob_hand)));
+    while (!done) done = take_turn(alice_hand, bob_hand);
+
+    std::cout << std::endl;
+
+    std::cout << "Alice's cards:" << std::endl;
+    std::cout << alice_hand << std::endl;
+
+    std::cout << "Bob's cards:" << std::endl;
+    std::cout << bob_hand;
 
     return 0;
 }

@@ -3,6 +3,8 @@
 // All class declarations related to defining a single card go here
 #pragma once
 
+#include <iostream>
+
 enum Suit {
     HEARTS,
     SPADES,
@@ -24,3 +26,5 @@ bool operator<=(Card, Card);
 bool operator>=(Card, Card);
 bool operator==(Card, Card);
 bool operator!=(Card, Card);
+
+std::ostream &operator<<(std::ostream &os, Card c); 
