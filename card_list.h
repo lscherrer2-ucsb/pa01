@@ -17,6 +17,10 @@ class CardList {
 
   public:
     CardList(void);
+    ~CardList(void);
+    CardList(const CardList& source);
+    CardList& operator=(const CardList& source);
+
     bool insert(Card);
     bool remove(Card);
     Card successor(Card);
@@ -25,6 +29,7 @@ class CardList {
     Card max(void);
 
   private:
+    void clear(Node *n); // helper for destructor
     Node *successorNode(Node *);
     Node *predecessorNode(Node *);
     Node *minNode(Node *root);
