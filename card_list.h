@@ -2,9 +2,11 @@
 // Author: Your name
 // All class declarations related to defining a BST that represents a player's
 // hand
-#pragma once
+#ifndef CARD_LIST
+#define CARD_LIST
 
 #include "card.h"
+#include <fstream>
 #include <type_traits>
 class CardList {
   private:
@@ -104,3 +106,6 @@ class CardList {
 };
 
 std::ostream &operator<<(std::ostream &os, CardList &c);
+CardList card_list_from_file(std::ifstream &file);
+
+#endif

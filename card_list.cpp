@@ -185,3 +185,12 @@ std::ostream &operator<<(std::ostream &os, CardList &c) {
         std::cout << *it << std::endl;
     return os;
 }
+
+CardList card_list_from_file(std::ifstream &file) {
+    CardList hand;
+    std::string line;
+    while (getline(file, line) && (line.length() > 0)) {
+        hand.insert(parse_card(line));
+    }
+    return hand;
+}

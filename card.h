@@ -1,9 +1,13 @@
 // card.h
 // Author: Your name
 // All class declarations related to defining a single card go here
-#pragma once
+#ifndef CARD
+#define CARD
 
+#include <fstream>
 #include <iostream>
+#include <set>
+#include <string>
 
 enum Suit {
     HEARTS,
@@ -27,4 +31,10 @@ bool operator>=(Card, Card);
 bool operator==(Card, Card);
 bool operator!=(Card, Card);
 
-std::ostream &operator<<(std::ostream &os, Card c); 
+std::ostream &operator<<(std::ostream &os, Card c);
+
+int parse_suit(char s);
+int parse_rank(std::string s);
+Card parse_card(std::string s);
+std::set<Card> card_set_from_file(std::ifstream &file);
+#endif
