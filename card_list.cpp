@@ -28,10 +28,11 @@ void CardList::clear(Node *n) {
 
 CardList::Node *CardList::copySubtree(Node *n) {
     if (n == nullptr) return nullptr;
-    copySubtree(n->left);
     Node *newNode = new Node(n->card);
-    newNode->card = n->card;
-    copySubtree(n->right);
+    newNode->left = copySubtree(n->left);
+    if (newNode->left) newNode->left->parent = newNode;
+    newNode->right = copySubtree(n->right);
+    if (newNode->right) newNode->right->parent = newNode;
     return newNode;
 }
 

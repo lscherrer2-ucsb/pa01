@@ -1,5 +1,5 @@
 // card.h
-// Author: Your name
+// Author: Luke Scherrer
 // All class declarations related to defining a single card go here
 #ifndef CARD
 #define CARD
@@ -10,10 +10,10 @@
 #include <string>
 
 enum Suit {
-    HEARTS,
-    SPADES,
-    DIAMONDS,
     CLUBS,
+    DIAMONDS,
+    SPADES,
+    HEARTS,
 };
 
 struct Card {

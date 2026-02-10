@@ -1,5 +1,5 @@
 // card_list.h
-// Author: Your name
+// Author: Keegan Browne, Luke Scherrer
 // All class declarations related to defining a BST that represents a player's
 // hand
 #ifndef CARD_LIST
