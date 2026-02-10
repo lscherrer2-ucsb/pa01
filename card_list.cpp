@@ -1,6 +1,5 @@
 // card_list.cpp
-// Author: Your name
-// Implementation of the classes defined in card_list.h
+// Author: Keegan Browne, Luke Scherrer
 #include "card_list.h"
 #include <iostream>
 CardList::CardList(void) {
@@ -38,12 +37,51 @@ CardList::Node *CardList::copySubtree(Node *n) {
 
 CardList::Node::Node(Card c)
     : card(c), parent(nullptr), left(nullptr), right(nullptr) {}
-Card CardList::min() {
-    return minNode(root)->card;
+
+CardList::Iterator::Iterator(Node *n) : current(n) {}
+
+const Card &CardList::Iterator::operator*() const {
+    return current->card;
 }
-Card CardList::max() {
-    return maxNode(root)->card;
+
+CardList::Iterator &CardList::Iterator::operator++() {
+    if (current->right) {
+        current = current->right;
+        while (current->left) current = current->left;
+    } else {
+        Node *p = current->parent;
+        while (p && current == p->right) {
+            current = p;
+            p = p->parent;
+        }
+        current = p;
+    }
+    return *this;
 }
+
+CardList::Iterator &CardList::Iterator::operator--() {
+    if (current->left) {
+        current = current->left;
+        while (current->right) current = current->right;
+    } else {
+        Node *p = current->parent;
+        while (p && current == p->left) {
+            current = p;
+            p = p->parent;
+        }
+        current = p;
+    }
+    return *this;
+}
+
+bool CardList::Iterator::operator==(const Iterator &other) const {
+    return current == other.current;
+}
+
+bool CardList::Iterator::operator!=(const Iterator &other) const {
+    return current != other.current;
+}
+
 CardList::Node *CardList::minNode(Node *root) {
     return root->left ? minNode(root->left) : root;
 }
@@ -152,38 +190,15 @@ CardList::Iterator CardList::begin() {
 CardList::Iterator CardList::end() {
     return Iterator(nullptr);
 }
-CardList::ReverseIterator CardList::rbegin() {
-    return ReverseIterator(root ? maxNode(root) : nullptr);
+CardList::Iterator CardList::rbegin() {
+    return Iterator(root ? maxNode(root) : nullptr);
 }
-CardList::ReverseIterator CardList::rend() {
-    return ReverseIterator(nullptr);
-}
-
-CardList::Node *CardList::successorNode(Node *n) {
-    if (!n) return nullptr;
-    if (n->right) return minNode(n->right);
-    Node *p = n->parent;
-    while (p && n == p->right) {
-        n = p;
-        p = p->parent;
-    }
-    return p;
-}
-
-CardList::Node *CardList::predecessorNode(Node *n) {
-    if (!n) return nullptr;
-    if (n->left) return maxNode(n->left);
-    Node *p = n->parent;
-    while (p && n == p->left) {
-        n = p;
-        p = p->parent;
-    }
-    return p;
+CardList::Iterator CardList::rend() {
+    return Iterator(nullptr);
 }
 
 std::ostream &operator<<(std::ostream &os, CardList &c) {
-    for (auto it = c.begin(); it != c.end(); ++it)
-        std::cout << *it << std::endl;
+    for (auto it = c.begin(); it != c.end(); ++it) os << *it << std::endl;
     return os;
 }
 
@@ -194,4 +209,31 @@ CardList card_list_from_file(std::ifstream &file) {
         hand.insert(parse_card(line));
     }
     return hand;
+}
+
+void playGame(CardList &alice_hand, CardList &bob_hand) {
+    bool done = false;
+    while (!done) {
+        done = true;
+        for (auto it = alice_hand.begin(); it != alice_hand.end(); ++it) {
+            Card c = *it;
+            if (bob_hand.contains(c)) {
+                std::cout << "Alice picked matching card " << c << std::endl;
+                bob_hand.remove(c);
+                alice_hand.remove(c);
+                done = false;
+                break;
+            }
+        }
+        for (auto it = bob_hand.rbegin(); it != bob_hand.rend(); --it) {
+            Card c = *it;
+            if (alice_hand.contains(c)) {
+                std::cout << "Bob picked matching card " << c << std::endl;
+                bob_hand.remove(c);
+                alice_hand.remove(c);
+                done = false;
+                break;
+            }
+        }
+    }
 }

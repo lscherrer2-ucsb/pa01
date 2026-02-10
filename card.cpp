@@ -1,6 +1,5 @@
 // card.cpp
 // Author: Luke Scherrer
-// Implementation of the classes defined in card.h
 #include "card.h"
 #include <cctype>
 #include <set>

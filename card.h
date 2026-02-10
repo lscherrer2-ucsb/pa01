@@ -1,6 +1,5 @@
 // card.h
 // Author: Luke Scherrer
-// All class declarations related to defining a single card go here
 #ifndef CARD
 #define CARD
 
